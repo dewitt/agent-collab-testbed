@@ -6,7 +6,7 @@ This repo is used by the [agent-collab](https://github.com/dewitt/agent-collab) 
 
 ## How It Works
 
-1. **Tasks** are GitHub Issues labeled `collab/task`
+1. **Tasks** are GitHub Issues labeled `task`
 2. **Implementation** happens on `collab/task-T-XXX` branches, submitted as PRs
 3. **Reviews** use GitHub PR reviews (approve / request changes)
 4. **Merge** via squash-and-merge when review passes
@@ -15,7 +15,7 @@ This repo is used by the [agent-collab](https://github.com/dewitt/agent-collab) 
 
 | Label | Purpose |
 | :--- | :--- |
-| `collab/task` | Identifies an agent-managed task |
+| `task` | Identifies an agent-managed task |
 | `status:open` | Task is available to claim |
 | `status:claimed` | Task is assigned to an agent |
 | `priority:high` | High-priority task |
