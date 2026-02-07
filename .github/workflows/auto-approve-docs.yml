@@ -1,0 +1,38 @@
+name: Auto-approve docs-only PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  auto-approve-docs:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'docs-only')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if only docs changed
+        id: check
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD)
+          echo "Changed files:"
+          echo "$FILES"
+          # Allow: *.md, docs/*, LICENSE, .github/workflows/auto-approve-docs.yml
+          NON_DOC=$(echo "$FILES" | grep -vE '\.(md|txt)$' | grep -vE '^docs/' | grep -vE '^LICENSE$' || true)
+          if [ -z "$NON_DOC" ]; then
+            echo "docs_only=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "docs_only=false" >> "$GITHUB_OUTPUT"
+            echo "Non-doc files changed: $NON_DOC"
+          fi
+
+      - name: Auto-approve
+        if: steps.check.outputs.docs_only == 'true'
+        run: gh pr review "${{ github.event.pull_request.number }}" --approve --body "Auto-approved: docs-only change"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
