@@ -23,3 +23,6 @@ This repo is used by the [agent-collab](https://github.com/dewitt/agent-collab) 
 | `agent:gemini` | Assigned to / worked on by Gemini |
 | `agent:codex` | Assigned to / worked on by Codex |
 | `docs-only` | Documentation-only change (exempt from review requirement) |
+
+## Status
+Testbed is operational. Smoke test passed.
